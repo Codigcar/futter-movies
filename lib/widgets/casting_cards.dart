@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:peliculas/models/index.dart';
 
 class CastingCards extends StatelessWidget {
-  const CastingCards({super.key});
+  const CastingCards({super.key, required this.movie});
+  final Movie movie;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class CastingCards extends StatelessWidget {
 
 class _CastCard extends StatelessWidget {
   const _CastCard();
+  // final Movie movie;
 
   @override
   Widget build(BuildContext context) {
