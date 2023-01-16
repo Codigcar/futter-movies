@@ -1,11 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:peliculas/models/index.dart';
 
-class MovieSlider extends StatelessWidget {
+class MovieSlider extends StatefulWidget {
   final List<Movie> movies;
   final String? title;
+  final Function onNextPage;
 
-  const MovieSlider({super.key, required this.movies, this.title});
+  const MovieSlider(
+      {super.key, required this.movies, this.title, required this.onNextPage});
+
+  @override
+  State<MovieSlider> createState() => _MovieSliderState();
+}
+
+class _MovieSliderState extends State<MovieSlider> {
+  final ScrollController scrollController = new ScrollController();
+
+  // cuando inicia el widget por primera vez
+  @override
+  void initState() {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 500) {
+        widget.onNextPage();
+      }
+    });
+    super.initState();
+  }
+
+  // cuando el widget va ser destrozado
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +46,18 @@ class MovieSlider extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
-              title ?? 'Popularesxd',
+              widget.title ?? 'Popularesxd',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(height: 3),
           Expanded(
             child: ListView.builder(
+              controller: scrollController,
               scrollDirection: Axis.horizontal,
-              itemCount: movies.length,
-              itemBuilder: (_, int index) => _MoviePoster(movie: movies[index]),
+              itemCount: widget.movies.length,
+              itemBuilder: (_, int index) =>
+                  _MoviePoster(movie: widget.movies[index]),
             ),
           )
         ],
